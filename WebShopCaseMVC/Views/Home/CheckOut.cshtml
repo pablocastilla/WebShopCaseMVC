@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Model.Article>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalWithoutVAT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalWithVAT)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalWithoutVAT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalWithVAT)
+        </td>
+       
+    </tr>
+}
+
+</table>
+
+<div style="width:800px;float:left">
+    <div class="detailItemHeader">Price without VAT: </div>
+    <div id="detailPriceWithoutVat" class="detailItemValue">@ViewBag.TotalWithoutVAT</div>
+</div>
+
+<div style="width:800px;float:left">
+    <div class="detailItemHeader">Total VAT: </div>
+    <div id="detailPriceWithVat" class="detailItemValue">@ViewBag.TotalVAT</div>
+</div>
+
+<div style="width:800px;float:left">
+    <div class="detailItemHeader">Price with VAT: </div>
+    <div id="detailPriceWithVat" class="detailItemValue">@ViewBag.TotalWithVAT</div>
+</div>
+
+<div style="width:800px;float:left;margin-top:20px">
+    <p>
+        @Html.ActionLink("Finish checkout", "Thankyou")
+    </p>
+</div>

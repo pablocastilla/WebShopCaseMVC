@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Index";
+    ViewBag.CurrentPage = 1;
+
+}
+
+<h2>Product list</h2>
+
+<!-- Here it loads the article list with JQuery, see application.js-->
+<div id="articlesList">
+
+</div>
+
+
+
+<!-- Here goes the pages -->
+<table>
+    <tr>
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <td onclick="loadList(@i)" class="pages pointer">@i</td>
+        }
+
+    </tr>
+</table>
+
+<!-- Here goes the articles details. -->
+<div id="articleDetailList" style="display:none;width:100%; margin-top: 50px;border: 1px solid">
+    <div style="width:800px;float:left">
+        <div class="detailItemHeader">Name: </div>
+        <div id="detailName" class="detailItemValue"></div>
+    </div>
+    <div style="width:800px;float:left">
+        <div class="detailItemHeader">Price without VAT: </div>
+        <div id="detailPriceWithoutVat" class="detailItemValue"></div>
+    </div>
+
+    <div style="width:800px;float:left">
+        <div class="detailItemHeader">Price with VAT: </div>
+        <div id="detailPriceWithVat" class="detailItemValue"></div>
+    </div>
+
+    <div style="width:800px;float:left">
+        <div class="detailItemHeader">Description: </div>
+        <div id="detailDescription" class="detailItemValue"></div>
+    </div>
+
+    <div style="width:800px;float:left">
+        <input id="addItemToCart" type="button" value="Add to cart" />
+        <input type="button" onclick="$('#articleDetailList').hide();" value="Close" />
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    
+    $(document).ready(loadList(1));
+
+</script>

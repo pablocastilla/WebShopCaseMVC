@@ -1,0 +1,111 @@
+﻿<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.js"></script>
+<script src="~/Scripts/ngDialog.js"></script>
+
+
+<script type="text/ng-template" id="PopupDialog">
+    <h3><a href="">Close all by click here!</a></h3>
+</script>
+
+
+<script type="text/javascript">
+
+    var usingRESTApp = angular.module('UsingREST', ['ngDialog']);
+
+    usingRESTApp.config(['ngDialogProvider', function (ngDialogProvider) {
+        ngDialogProvider.setDefaults({
+            className: 'ngdialog-theme-default',
+            plain: false,
+            showClose: true,
+            closeByDocument: true,
+            closeByEscape: true,
+            appendTo: false
+        });
+    }]);
+
+
+    usingRESTApp.controller('UsingRESTController', ['$scope', '$http', 'ngDialog',
+    function ($scope, $http, ngDialog) {
+        $scope.page = 0;
+        $scope.pageSize = 20000;
+        $scope.articles = null;
+
+        $scope.fetch = function () {
+
+            $http.get('/api/Article/', {
+                params: {
+                    page: $scope.page,
+                    pageSize: $scope.pageSize
+                }
+            })
+             .success(function (data, status, headers, config) {
+                 $scope.articles = data;
+
+             }).
+             error(function (data, status, headers, config) {
+                 // log error
+             });
+        };
+
+        $scope.fetch();
+
+
+        $scope.openDetails = function (Id) {
+
+            $scope.Id = Id;
+
+            ngDialog.open({
+                template: 'UsingRESTDetails',
+                controller: ['$scope', '$timeout', function ($scope) {
+
+                    $http.get('/api/Article/', {
+                        params: {
+                            id: $scope.Id
+
+                        }
+                    })
+                      .success(function (data, status, headers, config) {
+                          $scope.article = data;
+
+                      }).
+                      error(function (data, status, headers, config) {
+                          // log error
+                      });
+
+                }],
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        };
+    }]);
+
+</script>
+
+
+
+
+<div ng-app="UsingREST">
+    <div ng-controller="UsingRESTController">
+
+        <table class="table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Price ex.VAT
+                </th>
+            </tr>
+            <tr ng-repeat="item in articles" ng-click="openDetails(item.Id)">
+
+
+                <td class="body">
+                    {{ item.Name }}
+                </td>
+                <td class="body">
+                    {{ item.TotalWithoutVAT }}
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+﻿@using WebShopCaseMVC.Properties;
+@model IEnumerable<Model.Article>
+
+
+@{
+    ViewBag.Title = "Index";    
+    Layout = null;
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalWithoutVAT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalWithVAT)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalWithoutVAT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalWithVAT)
+            </td>
+            <td>
+
+            <td onclick="loadDetail(@item.Id)" class="pointer">Details</td>
+
+            
+        </tr>
+    }
+
+
+</table>
+

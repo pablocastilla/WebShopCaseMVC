@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Articles>
+    <Article>
+        <Id>0</Id>
+        <Name>PlayStation 3</Name>
+        <Description>PlayStation 3 with gran turismo</Description>
+        <TotalWithoutVAT>200</TotalWithoutVAT>
+        <TotalWithVAT>240</TotalWithVAT>        
+    </Article>
+    <Article>
+        <Id>1</Id>
+        <Name>PlayStation 4</Name>
+        <Description>PlayStation 4 with a dualshock</Description>
+        <TotalWithoutVAT>400</TotalWithoutVAT>
+        <TotalWithVAT>480</TotalWithVAT>
+    </Article>
+    <Article>
+        <Id>2</Id>
+        <Name>XBox 360</Name>
+        <Description>XBox 360 with Halo</Description>
+        <TotalWithoutVAT>200</TotalWithoutVAT>
+        <TotalWithVAT>240</TotalWithVAT>
+    </Article>
+    <Article>
+        <Id>3</Id>
+        <Name>XBox One</Name>
+        <Description>XBox One with Forza</Description>
+        <TotalWithoutVAT>300</TotalWithoutVAT>
+        <TotalWithVAT>360</TotalWithVAT>
+    </Article>
+    <Article>
+        <Id>4</Id>
+        <Name>Wii</Name>
+        <Description>Wii with Mario Kart</Description>
+        <TotalWithoutVAT>150</TotalWithoutVAT>
+        <TotalWithVAT>200</TotalWithVAT>
+    </Article>
+    <Article>
+        <Id>5</Id>
+        <Name>Wii U</Name>
+        <Description>Wii U with Mario Bros</Description>
+        <TotalWithoutVAT>300</TotalWithoutVAT>
+        <TotalWithVAT>360</TotalWithVAT>
+    </Article>
+</Articles>
