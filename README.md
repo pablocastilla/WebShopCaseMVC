@@ -1,6 +1,6 @@
 ##Implementation process:##
 
-I will create the model and its repositories, leaving the page for the end. I will do this way because I will be able to use the repositories in the controllers and the model in the UI scaffolds. Also, as the problem is very easy and it won’t change in the future, I haven’t implemented the unittesting. I have used StructureMap for IoC. The page is not perfect at css level or error handling, but I suppose this is a prototipe and not a final solution, also going to a final solution is possible with this code without any problem.
+I create the model and its repositories, leaving the page for the end. I do it this way because I will be able to use the repositories in the controllers and the model in the UI scaffolds. Also, as the problem is very easy and it won’t change in the future, I haven’t implemented the unittesting. I have used StructureMap for IoC. The page is not perfect at css level or error handling, but I suppose this is a prototipe and not a final solution, also going to a final solution is possible with this code without any problem.
 
 In the page I show 3 ways of loading web pages using ajax, there is no ajax at "menu" level:
 *	The article list is created with a partial view retrieved from the server using JQuery.ajax() and injected in the page with JQuery.html(). This is not the best solution at bandwidth level but faster in implementation.
