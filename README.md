@@ -11,31 +11,31 @@ Add and remove item to cart are implemented using JQuery and Post methods in the
 I expanded the IdentityUser and AccountViewModel with the user new information required.
 
 Important stuff:
-	WebShopCaseMVC
-		Bundles
-			Create bundles with js and css.
-		Scripts
-			WebShopCaseMVC/Scripts/application/application.js -> my javascript functions with jquery.
-		Controllers
-			HomeController: controller for the pages in /Home/. It uses the Session object for storing the cart between calls. It also uses StructureMap as IoC.
-			ArticleController: this is the REST API.
-		Models:
-			IdentityModels: here the application user is define, with the properties to be saved that has been requested: Title, FirstName, LastName, Address, HouseNumber…
-		Views:
-			Account: Microsoft account management views.
-		Home
-			ArticleList: asp.net mvc page that is called through ajax and injected in the page.
-			Cart: List with the cart, for previous customer validation.
-			Checkout: list with the cart and final cost.
-			Index: it loads the ArticleList html through JQuery and inserts it. It has the page buttons below. It shows an AJAX retrieving html from the server. It also has the article details hidden.
-			Thankyou: final view giving thanks. The controller stores the order information. It has the tag [Authorize] in the controller, that way only a logged in user can go in. Because of that the login/register process is launched automatically if the user is not loggedin. In this controller the order is saved.
-			UsingREST: page that uses the REST api for retrieving the articles list. It is implemented with AngularJS. It uses the UsingRESTDetails page as template for the detail page in the popup. All the javascript is embedded in the page.
-			Global.asax: inits everything including the StructureMap for IoC.
-	Model
-		Article: entity representing an article.
-		WebShopModel: using EF (code first) we have two entities: order and order lines.
-	Repositories
-		IArticleRepository: repository for loading articles
-		ArticleRepository: loads articles from the XML using linq to xml.
-		IOrderRepository: repository for performing commands to the orders
-		OrderRepository: it has only one command, saving an order aggregate.
+	- WebShopCaseMVC
+		- Bundles
+			- Create bundles with js and css.
+		- Scripts
+			- WebShopCaseMVC/Scripts/application/application.js -> my javascript functions with jquery.
+		- Controllers
+			- HomeController: controller for the pages in /Home/. It uses the Session object for storing the cart between calls. It also uses StructureMap as IoC.
+			- ArticleController: this is the REST API.
+		- Models:
+			- IdentityModels: here the application user is define, with the properties to be saved that has been requested: Title, FirstName, LastName, Address, HouseNumber…
+		- Views:
+			- Account: Microsoft account management views.
+		- Home
+			- ArticleList: asp.net mvc page that is called through ajax and injected in the page.
+			- Cart: List with the cart, for previous customer validation.
+			- Checkout: list with the cart and final cost.
+			- Index: it loads the ArticleList html through JQuery and inserts it. It has the page buttons below. It shows an AJAX retrieving html from the server. It also has the article details hidden.
+			- Thankyou: final view giving thanks. The controller stores the order information. It has the tag [Authorize] in the controller, that way only a logged in user can go in. Because of that the login/register process is launched automatically if the user is not loggedin. In this controller the order is saved.
+			- UsingREST: page that uses the REST api for retrieving the articles list. It is implemented with AngularJS. It uses the UsingRESTDetails page as template for the detail page in the popup. All the javascript is embedded in the page.
+			- Global.asax: inits everything including the StructureMap for IoC.
+	- Model
+		- Article: entity representing an article.
+		- WebShopModel: using EF (code first) we have two entities: order and order lines.
+	- Repositories
+		- IArticleRepository: repository for loading articles
+		- ArticleRepository: loads articles from the XML using linq to xml.
+		- IOrderRepository: repository for performing commands to the orders
+		- OrderRepository: it has only one command, saving an order aggregate.
