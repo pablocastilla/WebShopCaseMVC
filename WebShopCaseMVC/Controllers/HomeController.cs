@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using Model;
 using Repositories;
-using StructureMap;
 using WebShopCaseMVC.Properties;
 
 namespace WebShopCaseMVC.Controllers
@@ -19,7 +18,7 @@ namespace WebShopCaseMVC.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var articleRepository = ObjectFactory.GetInstance<IArticleRepository>();
+            IArticleRepository articleRepository = new ArticleRepository();
                        
             var totalArticles = articleRepository.CountTotalArticles();
 
@@ -50,7 +49,7 @@ namespace WebShopCaseMVC.Controllers
         /// <returns></returns>
         public ActionResult ArticleList(int id)
         {
-            var articleRepository = ObjectFactory.GetInstance<IArticleRepository>();                      
+            IArticleRepository articleRepository = new ArticleRepository();                     
 
             var result = articleRepository.GetArticles(id, Settings.Default.PAGESIZE);
 
@@ -69,7 +68,7 @@ namespace WebShopCaseMVC.Controllers
         [HttpPost]
         public ActionResult addItemToCart(string id, string quantity)
         {
-            var articleRepository = ObjectFactory.GetInstance<IArticleRepository>();
+            IArticleRepository articleRepository = new ArticleRepository();
 
             var article = articleRepository.GetArticle(Convert.ToInt32(id));
 
@@ -175,7 +174,7 @@ namespace WebShopCaseMVC.Controllers
         public ActionResult ThankYou()
         {
 
-            var orderRepository = ObjectFactory.GetInstance<IOrderRepository>();
+            IOrderRepository orderRepository = new OrderRepository();
 
             //add the information to the database about the order.
             if (Session["Cart"] == null)

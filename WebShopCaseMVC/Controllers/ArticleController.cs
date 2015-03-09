@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Web.Http;
 using Model;
 using Repositories;
-using StructureMap;
 using WebShopCaseMVC.Properties;
 
 namespace WebShopCaseMVC.Controllers
@@ -19,7 +18,7 @@ namespace WebShopCaseMVC.Controllers
         // GET: api/Article
         public IEnumerable<Article> Get(int page,int pageSize)
         {
-            var domainRepository = ObjectFactory.GetInstance<IArticleRepository>();
+            IArticleRepository domainRepository = new ArticleRepository();
 
             
 
@@ -34,7 +33,7 @@ namespace WebShopCaseMVC.Controllers
         // GET: api/Article/5
         public Article Get(int id)
         {
-            var domainRepository = ObjectFactory.GetInstance<IArticleRepository>();
+            IArticleRepository domainRepository = new ArticleRepository();
 
             var result = domainRepository.GetArticle(id);
 
