@@ -300,10 +300,6 @@
       <Project>{2e1ad368-04fa-44f1-a7de-09515caeb26b}</Project>
       <Name>Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Repositories\Repositories.csproj">
-      <Project>{c78c7a33-7268-4c46-80bd-32637727cd26}</Project>
-      <Name>Repositories</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

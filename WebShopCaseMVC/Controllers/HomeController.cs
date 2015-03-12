@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using Model;
-using Repositories;
 using WebShopCaseMVC.Properties;
 
 namespace WebShopCaseMVC.Controllers
@@ -18,9 +18,13 @@ namespace WebShopCaseMVC.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            IArticleRepository articleRepository = new ArticleRepository();
-                       
-            var totalArticles = articleRepository.CountTotalArticles();
+            string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+
+            XElement xelement = XElement.Load(path + @"\\Articles.xml", LoadOptions.None);
+            var xmlArticlesNodes = xelement.Elements("Article");
+
+             var totalArticles = xmlArticlesNodes.Count();
+           
 
             //the number of pages are calculated in the server
             ViewBag.CurrentPage = 1;
@@ -48,14 +52,32 @@ namespace WebShopCaseMVC.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         public ActionResult ArticleList(int id)
-        {
-            IArticleRepository articleRepository = new ArticleRepository();                     
+        {                         
 
-            var result = articleRepository.GetArticles(id, Settings.Default.PAGESIZE);
+
+            string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+
+            XElement xelement = XElement.Load(path + @"\\Articles.xml", LoadOptions.None);
+            var xmlArticlesNodes = xelement.Elements("Article");
+
+
+            var articles = xmlArticlesNodes.Skip((id - 1) * Settings.Default.PAGESIZE).Take(Settings.Default.PAGESIZE).
+                                            Select(a => new Article()
+                                            {
+                                                Id = (int)a.Element("Id"),
+                                                Name = (string)a.Element("Name"),
+                                                Description = (string)a.Element("Description"),
+                                                TotalWithoutVAT = (double)a.Element("TotalWithoutVAT"),
+                                                TotalWithVAT = (double)a.Element("TotalWithVAT")
+                                            });
+
+
+
+           
 
             ViewBag.CurrentPage = id;
-            
-            return View(result);
+
+            return View(articles);
         }
 
        
@@ -68,9 +90,23 @@ namespace WebShopCaseMVC.Controllers
         [HttpPost]
         public ActionResult addItemToCart(string id, string quantity)
         {
-            IArticleRepository articleRepository = new ArticleRepository();
+            string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
 
-            var article = articleRepository.GetArticle(Convert.ToInt32(id));
+            XElement xelement = XElement.Load(path + @"\\Articles.xml", LoadOptions.None);
+            var xmlArticlesNodes = xelement.Elements("Article");
+
+            var articles = xmlArticlesNodes.
+                                            Select(a => new Article()
+                                            {
+                                                Id = (int)a.Element("Id"),
+                                                Name = (string)a.Element("Name"),
+                                                Description = (string)a.Element("Description"),
+                                                TotalWithoutVAT = (double)a.Element("TotalWithoutVAT"),
+                                                TotalWithVAT = (double)a.Element("TotalWithVAT")
+                                            });
+
+
+            var article= articles.First(a => a.Id == Convert.ToInt32(id));
 
 
             if (Session["Cart"] == null)
@@ -174,8 +210,6 @@ namespace WebShopCaseMVC.Controllers
         public ActionResult ThankYou()
         {
 
-            IOrderRepository orderRepository = new OrderRepository();
-
             //add the information to the database about the order.
             if (Session["Cart"] == null)
             {
@@ -184,7 +218,36 @@ namespace WebShopCaseMVC.Controllers
 
             var cartInSession = (List<Article>)Session["Cart"];
 
-            Order order = orderRepository.SaveOrder(User.Identity.Name,cartInSession);
+           
+
+            Order order = null;
+
+            using (var webShopModel = new WebShopModel())
+            {
+                webShopModel.Database.CreateIfNotExists();
+
+                webShopModel.Database.Initialize(true);
+                order = new Order()
+                {
+                    UserID = User.Identity.Name,
+                    OrderLines = cartInSession.Select(a => new OrderLine()
+                    {
+                        ArticleID = a.Id,
+                        Quantity = 1
+                    }).ToList(),
+
+                    TotalWithoutVAT = cartInSession.Sum(a => a.TotalWithoutVAT),
+                    TotalWithVAT = cartInSession.Sum(a => a.TotalWithVAT)
+
+
+                };
+
+                webShopModel.Orders.Add(order);
+
+                webShopModel.SaveChanges();
+            }
+
+           
 
            
             @ViewBag.OrderId = order.OrderId;

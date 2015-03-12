@@ -4,8 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Xml.Linq;
 using Model;
-using Repositories;
 using WebShopCaseMVC.Properties;
 
 namespace WebShopCaseMVC.Controllers
@@ -18,26 +18,57 @@ namespace WebShopCaseMVC.Controllers
         // GET: api/Article
         public IEnumerable<Article> Get(int page,int pageSize)
         {
-            IArticleRepository domainRepository = new ArticleRepository();
-
-            
+                        
 
             if(pageSize<Settings.Default.PAGESIZE)
                 pageSize = Settings.Default.PAGESIZE;
 
-            var result = domainRepository.GetArticles(page, pageSize);                       
+                   
 
-            return result;
+            string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
+
+            XElement xelement = XElement.Load(path + @"\\Articles.xml", LoadOptions.None);
+            var xmlArticlesNodes = xelement.Elements("Article");
+
+
+            var articles = xmlArticlesNodes.Skip((page - 1) * pageSize).Take(pageSize).
+                                            Select(a => new Article()
+                                            {
+                                                Id = (int)a.Element("Id"),
+                                                Name = (string)a.Element("Name"),
+                                                Description = (string)a.Element("Description"),
+                                                TotalWithoutVAT = (double)a.Element("TotalWithoutVAT"),
+                                                TotalWithVAT = (double)a.Element("TotalWithVAT")
+                                            });
+
+
+
+            return articles;
+                      
         }
 
         // GET: api/Article/5
         public Article Get(int id)
         {
-            IArticleRepository domainRepository = new ArticleRepository();
+            string path = AppDomain.CurrentDomain.GetData("DataDirectory").ToString();
 
-            var result = domainRepository.GetArticle(id);
+            XElement xelement = XElement.Load(path + @"\\Articles.xml", LoadOptions.None);
+            var xmlArticlesNodes = xelement.Elements("Article");
 
-            return result;
+            var articles = xmlArticlesNodes.
+                                            Select(a => new Article()
+                                            {
+                                                Id = (int)a.Element("Id"),
+                                                Name = (string)a.Element("Name"),
+                                                Description = (string)a.Element("Description"),
+                                                TotalWithoutVAT = (double)a.Element("TotalWithoutVAT"),
+                                                TotalWithVAT = (double)a.Element("TotalWithVAT")
+                                            });
+
+
+            return articles.First(a => a.Id == id);
+
+           
         }
 
         // POST: api/Article
